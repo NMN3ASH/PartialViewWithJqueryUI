@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PayrollModelStoreContainer" CdmEntityContainer="PayrollEntities">
+    <EntitySetMapping Name="Departments">
+      <EntityTypeMapping TypeName="PayrollModel.Department">
+        <MappingFragment StoreEntitySet="Department">
+          <ScalarProperty Name="Department_Id" ColumnName="Department_Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="PayrollModel.Employee">
+        <MappingFragment StoreEntitySet="Employee">
+          <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Address1" ColumnName="Address1" />
+          <ScalarProperty Name="Department_Id" ColumnName="Department_Id" />
+          <ScalarProperty Name="Join_date" ColumnName="Join_date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Payments">
+      <EntityTypeMapping TypeName="PayrollModel.Payment">
+        <MappingFragment StoreEntitySet="Payment">
+          <ScalarProperty Name="Payment_Id" ColumnName="Payment_Id" />
+          <ScalarProperty Name="Transaction_No" ColumnName="Transaction_No" />
+          <ScalarProperty Name="Transaction_Date" ColumnName="Transaction_Date" />
+          <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+          <ScalarProperty Name="Year_" ColumnName="Year_" />
+          <ScalarProperty Name="Month_" ColumnName="Month_" />
+          <ScalarProperty Name="Total_Amount" ColumnName="Total_Amount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Salaries">
+      <EntityTypeMapping TypeName="PayrollModel.Salary">
+        <MappingFragment StoreEntitySet="Salary">
+          <ScalarProperty Name="Salary_Id" ColumnName="Salary_Id" />
+          <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+          <ScalarProperty Name="Basic_Salary" ColumnName="Basic_Salary" />
+          <ScalarProperty Name="House_Rent" ColumnName="House_Rent" />
+          <ScalarProperty Name="Medical" ColumnName="Medical" />
+          <ScalarProperty Name="Conveyance" ColumnName="Conveyance" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

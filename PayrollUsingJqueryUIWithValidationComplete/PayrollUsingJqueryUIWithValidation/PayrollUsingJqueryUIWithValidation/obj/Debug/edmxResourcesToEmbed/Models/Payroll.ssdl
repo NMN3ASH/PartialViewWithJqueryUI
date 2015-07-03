@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PayrollModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="Department_Id" />
+    </Key>
+    <Property Name="Department_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Employee_Id" />
+    </Key>
+    <Property Name="Employee_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="200" />
+    <Property Name="Email" Type="varchar" MaxLength="200" />
+    <Property Name="Contact" Type="varchar" MaxLength="200" />
+    <Property Name="Address1" Type="varchar" MaxLength="200" />
+    <Property Name="Department_Id" Type="int" />
+    <Property Name="Join_date" Type="date" />
+  </EntityType>
+  <EntityType Name="Payment">
+    <Key>
+      <PropertyRef Name="Payment_Id" />
+    </Key>
+    <Property Name="Payment_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Transaction_No" Type="varchar" MaxLength="20" />
+    <Property Name="Transaction_Date" Type="date" />
+    <Property Name="Employee_Id" Type="int" />
+    <Property Name="Year_" Type="int" />
+    <Property Name="Month_" Type="varchar" MaxLength="20" />
+    <Property Name="Total_Amount" Type="float" />
+  </EntityType>
+  <EntityType Name="Salary">
+    <Key>
+      <PropertyRef Name="Salary_Id" />
+    </Key>
+    <Property Name="Salary_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Employee_Id" Type="int" />
+    <Property Name="Basic_Salary" Type="float" />
+    <Property Name="House_Rent" Type="float" />
+    <Property Name="Medical" Type="float" />
+    <Property Name="Conveyance" Type="float" />
+    <Property Name="Total" Type="float" />
+  </EntityType>
+  <Association Name="FK__Employee__Depart__37A5467C">
+    <End Role="Department" Type="Self.Department" Multiplicity="0..1" />
+    <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="Department_Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="Department_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Payment__Employe__3E52440B">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Employee_Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="Employee_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Salary__Employee__3B75D760">
+    <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+    <End Role="Salary" Type="Self.Salary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Employee_Id" />
+      </Principal>
+      <Dependent Role="Salary">
+        <PropertyRef Name="Employee_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PayrollModelStoreContainer">
+    <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Salary" EntityType="Self.Salary" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Employee__Depart__37A5467C" Association="Self.FK__Employee__Depart__37A5467C">
+      <End Role="Department" EntitySet="Department" />
+      <End Role="Employee" EntitySet="Employee" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Payment__Employe__3E52440B" Association="Self.FK__Payment__Employe__3E52440B">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Payment" EntitySet="Payment" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Salary__Employee__3B75D760" Association="Self.FK__Salary__Employee__3B75D760">
+      <End Role="Employee" EntitySet="Employee" />
+      <End Role="Salary" EntitySet="Salary" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

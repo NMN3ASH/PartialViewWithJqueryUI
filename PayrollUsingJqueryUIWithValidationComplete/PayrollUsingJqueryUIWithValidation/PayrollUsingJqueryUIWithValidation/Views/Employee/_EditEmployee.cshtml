@@ -1,0 +1,85 @@
+﻿@model PayrollUsingJqueryUIWithValidation.Models.Employee
+
+@using (Ajax.BeginForm("_EditEmployee", "Employee", null, new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "onSuccess",
+    OnFailure = "FailMessage",
+    UpdateTargetId = "resultTarget"
+}, new { id = "formId" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Employee</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Contact, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Contact)
+                @Html.ValidationMessageFor(model => model.Contact)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address1, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Address1)
+                @Html.ValidationMessageFor(model => model.Address1)
+            </div>
+        </div>
+       
+       <div class="form-group">
+            @Html.LabelFor(model => model.Department_Id, "DepartmentId", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                 @Html.DropDownList("Department_Id", (SelectList)ViewBag.Department_Id, "----Select One----")
+                @Html.ValidationMessageFor(model => model.Department_Id)
+            </div>
+        </div>
+      
+        <div class="form-group">
+            @Html.LabelFor(model => model.Join_date, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Join_date)
+                @Html.ValidationMessageFor(model => model.Join_date)
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>*@
+    </div>
+}
+

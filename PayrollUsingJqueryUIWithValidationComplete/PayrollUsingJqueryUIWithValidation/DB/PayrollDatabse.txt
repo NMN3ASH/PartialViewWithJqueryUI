@@ -1,0 +1,48 @@
+Create Database Payroll
+use Payroll
+
+
+create table Department
+(
+     Department_Id int primary key IDENTITY(101,1),
+     Code varchar(50)   ,
+     Name varchar(50)   
+)
+
+create table Employee
+(
+     Employee_Id int primary key IDENTITY(201,1),
+     Name varchar(200) ,
+     Contact varchar(200) ,
+     Address1  varchar(200)  ,
+     Department_Id int  ,
+     Join_date date ,
+     foreign key (Department_Id) references  Department 
+)
+
+create table Salary 
+(
+    Salary_Id int primary key IDENTITY(1,1),
+    Employee_Id int unique ,
+    Basic_Salary float ,
+    House_Rent float  , 
+    Medical float  ,
+    Conveyance float  ,
+    foreign key (Employee_Id) references  Employee 
+
+)
+create table Payment
+(
+    Payment_Id int primary key  IDENTITY(1,1),
+    Transaction_No varchar(20) ,
+    Transaction_Date date ,
+    Employee_Id int  , 
+    Year_  int  ,
+    Month_  varchar(20)  ,
+    Total_Amount float  ,
+    foreign key (Employee_Id) references  Employee ,
+	
+)
+select * from Employee
+select * from Salary 
+select * from Payment

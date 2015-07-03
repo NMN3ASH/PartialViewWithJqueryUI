@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PartialViewExample.Models.PhoneBookDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="GroupNames">
+          <Key>
+            <PropertyRef Name="GroupNameId" />
+          </Key>
+          <Property Name="GroupNameId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PhoneBooks">
+          <Key>
+            <PropertyRef Name="PhoneBookId" />
+          </Key>
+          <Property Name="PhoneBookId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Number" Type="nvarchar(max)" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="Address" Type="nvarchar(max)" />
+          <Property Name="GroupNameId" Type="int" Nullable="false" />
+          <Property Name="DateEntry" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId">
+          <End Role="GroupNames" Type="Self.GroupNames" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PhoneBooks" Type="Self.PhoneBooks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GroupNames">
+              <PropertyRef Name="GroupNameId" />
+            </Principal>
+            <Dependent Role="PhoneBooks">
+              <PropertyRef Name="GroupNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PartialViewExampleModelsPhoneBookDBModelStoreContainer">
+          <EntitySet Name="GroupNames" EntityType="Self.GroupNames" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PhoneBooks" EntityType="Self.PhoneBooks" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId" Association="Self.FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId">
+            <End Role="GroupNames" EntitySet="GroupNames" />
+            <End Role="PhoneBooks" EntitySet="PhoneBooks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PartialViewExample.Models.PhoneBookDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="GroupName">
+          <Key>
+            <PropertyRef Name="GroupNameId" />
+          </Key>
+          <Property Name="GroupNameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PhoneBooks" Relationship="Self.FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId" FromRole="GroupNames" ToRole="PhoneBooks" />
+        </EntityType>
+        <EntityType Name="PhoneBook">
+          <Key>
+            <PropertyRef Name="PhoneBookId" />
+          </Key>
+          <Property Name="PhoneBookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GroupNameId" Type="Int32" Nullable="false" />
+          <Property Name="DateEntry" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="GroupName" Relationship="Self.FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId" FromRole="PhoneBooks" ToRole="GroupNames" />
+        </EntityType>
+        <Association Name="FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId">
+          <End Role="GroupNames" Type="Self.GroupName" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PhoneBooks" Type="Self.PhoneBook" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GroupNames">
+              <PropertyRef Name="GroupNameId" />
+            </Principal>
+            <Dependent Role="PhoneBooks">
+              <PropertyRef Name="GroupNameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AddressbookEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="GroupNames" EntityType="Self.GroupName" />
+          <EntitySet Name="PhoneBooks" EntityType="Self.PhoneBook" />
+          <AssociationSet Name="FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId" Association="Self.FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId">
+            <End Role="GroupNames" EntitySet="GroupNames" />
+            <End Role="PhoneBooks" EntitySet="PhoneBooks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PartialViewExampleModelsPhoneBookDBModelStoreContainer" CdmEntityContainer="AddressbookEntities">
+          <EntitySetMapping Name="GroupNames">
+            <EntityTypeMapping TypeName="PartialViewExample.Models.PhoneBookDBModel.GroupName">
+              <MappingFragment StoreEntitySet="GroupNames">
+                <ScalarProperty Name="GroupNameId" ColumnName="GroupNameId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PhoneBooks">
+            <EntityTypeMapping TypeName="PartialViewExample.Models.PhoneBookDBModel.PhoneBook">
+              <MappingFragment StoreEntitySet="PhoneBooks">
+                <ScalarProperty Name="PhoneBookId" ColumnName="PhoneBookId" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="GroupNameId" ColumnName="GroupNameId" />
+                <ScalarProperty Name="DateEntry" ColumnName="DateEntry" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

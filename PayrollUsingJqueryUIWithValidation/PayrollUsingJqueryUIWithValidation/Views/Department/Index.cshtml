@@ -1,0 +1,276 @@
+﻿@model IEnumerable<PayrollUsingJqueryUIWithValidation.Models.Department>
+
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Index</h2>
+
+@*<<<<<<====Insert====>>>>>>>>*@
+
+<p>
+    <button id="model-openner-btn" onclick="CreateNewDepartment()">Add New Departmnt</button>
+</p>
+<div id="load"></div>
+
+@*<<<<<<====Alert====>>>>>>>>*@
+<div id="dialog-alert" style="display: none">
+    <p>
+        @TempData["msg"]!
+    </p>
+</div>
+@*<<<<<<====Delete====>>>>>>>>*@
+<div id="dialog-confirm" style="display: none">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        Are you sure to delete?
+    </p>
+</div>
+@*<<<<<<====View Details====>>>>>>>>*@
+<div id="dialog-view" style="display: none">
+</div>
+@*<<<<<<====Edit====>>>>>>>>*@
+<div id="dialog-edit" style="display: none">
+</div>
+
+<table class="table" style="width: 600px;">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Code)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Code)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+
+                <button id="model-openner-btn">
+                    @Html.ActionLink("Edit", "_EditDepartment", new { id = item.Department_Id }, new { @class = "editDialog" })
+                </button>|
+                <button id="model-delete-btn">
+                    @Html.ActionLink("Delete", "DeleteRecord", new { id = item.Department_Id }, new { @class = "confirmDialog" })
+                </button>|
+                <button id="model-details-btn">
+                    @Html.ActionLink("Details", "_DepartmentDetails", new { id = item.Department_Id }, new { @class = "ViewDialog" })
+                </button>
+
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+<script type="text/javascript">
+
+    var url = "";
+    //<<<<<<<<<<<<<====== Create/Insert New Department========>>>>>>>>>>>>>>>>>
+    function CreateNewDepartment()
+    {
+        $("#model-openner-btn").click(function () {
+            $("#load").dialog("open");
+        });
+        $(function () {
+            $("#load").dialog({
+                autoOpen: false,
+                //position: { my: "center", at: "top+14050", of: window },
+                resizable: false,
+                title: 'Add New Department',
+                show: { effect: "blind", duration: 1000 },
+                hide: { effect: "explode", duration: 1000 },
+                height: 250,
+                width: 350,
+                model: true,
+                draggable: true,
+                open: function () {
+                   $(this).load("/Department/_CreateNewDepartment");
+                    @*$(this).load('@Url.Action("_CreateNewDepartment", "Department")');*@
+                },
+                buttons: {
+                    "Add": function() {
+
+                        $("#formId").submit();
+                        AddDepartmentInfo();
+                    },
+                    'Cancel': function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+    }
+
+    function AddDepartmentInfo()
+    {
+        $(function() {
+       $.post('/Department/_CreateNewDepartment', { "code": $("#code").val(), "name": $("#name").val() });
+            });
+    }
+
+    //<<<<<<<<=====Alert========>>>>>>>>>>>>
+    $("#dialog-alert").dialog({
+        title: 'Alert',
+        autoOpen: false,
+        resizable: false,
+        height: 170,
+        width: 350,
+        show: { effect: 'drop', direction: "up" },
+        modal: true,
+        draggable: true,
+
+        buttons: {
+            "OK": function () {
+                $(this).dialog("close");
+
+            },
+            "Cancel": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    if ('@TempData["msg"]' != "") {
+        $("#dialog-alert").dialog('open');
+    }
+
+    //function SuccessMessage() {
+
+    //    $.post('/Department/_CreateNewDepartment', { "code": $("#code").val(), "name": $("#name").val() });
+    //    alert("hiiiiiiiii");
+    //    }
+    //<<<<<<<<<<<<<<<<<<<<=======================>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<==========Delete=============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".confirmDialog").live("click", function (e) {
+
+        var url = $(this).attr('href');
+        $("#dialog-confirm").dialog({
+            title: 'Delete Department Information',
+            autoOpen: false,
+            resizable: false,
+            height: 170,
+            width: 350,
+            show: { effect: "blind", duration: 1000 },
+            hide: { effect: "explode", duration: 1000 },
+            modal: true,
+            draggable: true,
+            buttons: {
+                "OK": function () {
+                    $(this).dialog("close");
+                    window.location = url;
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-confirm").dialog('open');
+        return false;
+    });
+
+
+    //<<<<<<<<=====Delete Alert========>>>>>>>>>>>>
+    @*$("#dialog-alert").dialog({
+        autoOpen: false,
+        resizable: false,
+        height: 170,
+        width: 350,
+        show: { effect: 'drop', direction: "up" },
+        modal: true,
+        draggable: true,
+        buttons: {
+            "OK": function () {
+                $(this).dialog("close");
+            },
+            "Cancel": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    if ('@TempData["msg"]' != "") {
+        $("#dialog-alert").dialog('open');
+    }*@
+
+    //<<<<<<<<<<<<<<<<<<<<=======================>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<==========View Details=============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".ViewDialog").live("click", function(e) {
+
+        var url = $(this).attr('href');
+        $("#dialog-view").dialog({
+            title: 'View Department',
+            autoOpen: false,
+            resizable: false,
+            height: 270,
+            width: 350,
+            show: { effect: "blind", duration: 1000 },
+            hide: { effect: "explode", duration: 1000 },
+            modal: true,
+            draggable: true,
+            open: function () {
+                $(this).load(url);
+            },
+            buttons: {
+                "Close": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-view").dialog('open');
+        return false;
+    });
+
+    //<<<<<<<<<<<<<<<<<<<<=======================>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<=========Edit==============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".editDialog").live("click", function(e) {
+        var url = $(this).attr('href');
+
+        $("#dialog-edit").dialog({
+            title: 'Update Department Information',
+            autoOpen: false,
+            resizable: false,
+            height: 355,
+            width: 400,
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function() {
+                $(this).load(url);
+            },
+            close: function() {
+                $(this).dialog('close');
+            }
+        ,
+        buttons: {
+            "Update": function() {
+                $("#formId").submit();
+                EditDepartmentInfo();
+            },
+            'Cancel': function() {
+                $(this).dialog("close");
+            }
+        }
+    });
+        $("#dialog-edit").dialog('open');
+        return false;
+    });
+
+    function EditDepartmentInfo() {
+        $(function () {
+            $.post('/Department/_EditDepartment', { "code": $("#code").val(), "name": $("#name").val() });
+        });
+    }
+
+</script>
+

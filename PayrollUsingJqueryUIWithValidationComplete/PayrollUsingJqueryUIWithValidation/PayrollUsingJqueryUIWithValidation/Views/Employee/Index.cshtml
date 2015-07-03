@@ -1,0 +1,272 @@
+﻿@model IEnumerable<PayrollUsingJqueryUIWithValidation.Models.Employee>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@*<<<<<<====Insert====>>>>>>>>*@
+
+<p>
+    <button id="model-openner-btn" onclick="CreateNewEmployee()">Add New Employee</button>
+</p>
+<div id="load"></div>
+
+@*<<<<<<====Alert====>>>>>>>>*@
+<div id="dialog-alert" style="display: none">
+    <p>
+        @TempData["msg"]!
+    </p>
+</div>
+@*<<<<<<====Delete====>>>>>>>>*@
+<div id="dialog-confirm" style="display: none">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        Are you sure to delete?
+    </p>
+</div>
+@*<<<<<<====View Details====>>>>>>>>*@
+<div id="dialog-view" style="display: none">
+</div>
+@*<<<<<<====Edit====>>>>>>>>*@
+<div id="dialog-edit" style="display: none">
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contact)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Join_date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Department.Code)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Contact)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Join_date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Department.Code)
+        </td>
+        <td>
+            <button id="model-openner-btn">
+                @Html.ActionLink("Edit", "_EditEmployee", new { id = item.Employee_Id }, new { @class = "editDialog" })
+            </button>|
+            <button id="model-delete-btn">
+                @Html.ActionLink("Delete", "DeleteRecord", new { id = item.Employee_Id }, new { @class = "confirmDialog" })
+            </button>|
+            <button id="model-details-btn">
+                @Html.ActionLink("Details", "_EmployeeDetails", new { id = item.Employee_Id }, new { @class = "ViewDialog" })
+            </button>
+        </td>
+    </tr>
+}
+
+</table>
+<script type="text/javascript">
+
+    var url = "";
+    //<<<<<<<<<<<<<====== Create/Insert New Department========>>>>>>>>>>>>>>>>>
+    function CreateNewEmployee() {
+        $("#model-openner-btn").click(function () {
+            $("#load").dialog("open");
+        });
+        $(function () {
+            $("#load").dialog({
+                autoOpen: false,
+                //position: { my: "center", at: "top+14050", of: window },
+                resizable: false,
+                title: 'Add New Employee',
+                show: { effect: "blind", duration: 1000 },
+                hide: { effect: "explode", duration: 1000 },
+                height: 450,
+                width: 400,
+                model: true,
+                draggable: true,
+                open: function () {
+                    $(this).load("/Employee/_CreateNewEmployee");
+                    @*$(this).load('@Url.Action("_CreateNewDepartment", "Department")');*@
+                },
+                buttons: {
+                    "Add": function () {
+
+                        $("#formId").submit();
+                        AddDepartmentInfo();
+                    },
+                    'Cancel': function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+    }
+
+    function AddDepartmentInfo() {
+        $(function () {
+            $.post('/Employee/_CreateNewEmployee', {
+                "name": $("#Name").val(), "email": $("#Email").val(),
+                "contact": $("#Contact").val(), "address1": $("#Address1").val(),
+                "join_date": $("#Join_date").val(), "code": $("#Code").val()
+            });
+        });
+    }
+
+    //<<<<<<<<=====Alert========>>>>>>>>>>>>
+    $("#dialog-alert").dialog({
+        title: 'Alert',
+        autoOpen: false,
+        resizable: false,
+        height: 170,
+        width: 350,
+        show: { effect: 'drop', direction: "up" },
+        modal: true,
+        draggable: true,
+
+        buttons: {
+            "OK": function () {
+                $(this).dialog("close");
+
+            },
+            "Cancel": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    if ('@TempData["msg"]' != "") {
+        $("#dialog-alert").dialog('open');
+    }
+
+    //<<<<<<<<<<<<<<<<<<<<==========Delete=============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".confirmDialog").live("click", function (e) {
+
+        var url = $(this).attr('href');
+        $("#dialog-confirm").dialog({
+            title: 'Delete Employee Information',
+            autoOpen: false,
+            resizable: false,
+            height: 170,
+            width: 350,
+            show: { effect: "blind", duration: 1000 },
+            hide: { effect: "explode", duration: 1000 },
+            modal: true,
+            draggable: true,
+            buttons: {
+                "OK": function () {
+                    $(this).dialog("close");
+                    window.location = url;
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-confirm").dialog('open');
+        return false;
+    });
+
+
+    //<<<<<<<<<<<<<<<<<<<<==========View Details=============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".ViewDialog").live("click", function (e) {
+
+        var url = $(this).attr('href');
+        $("#dialog-view").dialog({
+            title: 'View Employee',
+            autoOpen: false,
+            resizable: false,
+            height: 325,
+            width: 350,
+            show: { effect: "blind", duration: 1000 },
+            hide: { effect: "explode", duration: 1000 },
+            modal: true,
+            draggable: true,
+            open: function () {
+                $(this).load(url);
+            },
+            buttons: {
+                "Close": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-view").dialog('open');
+        return false;
+    });
+
+    //<<<<<<<<<<<<<<<<<<<<=======================>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<=========Edit==============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".editDialog").live("click", function (e) {
+        var url = $(this).attr('href');
+
+        $("#dialog-edit").dialog({
+            title: 'Update Employee Information',
+            autoOpen: false,
+            resizable: false,
+            height: 450,
+            width: 400,
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function () {
+                $(this).load(url);
+            },
+            close: function () {
+                $(this).dialog('close');
+            }
+        ,
+            buttons: {
+                "Update": function () {
+                    $("#formId").submit();
+                    EditEmployeeInfo();
+                },
+                'Cancel': function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-edit").dialog('open');
+        return false;
+    });
+
+    function EditEmployeeInfo() {
+        $(function () {
+            $.post('/Employee/_EditEmployee', {
+                "name": $("#Name").val(), "email": $("#Email").val(),
+                "contact": $("#Contact").val(), "address1": $("#Address1").val(),
+                "join_date": $("#Join_date").val(), "code": $("#Code").val()
+            });
+        });
+    }
+
+
+
+
+    </script>

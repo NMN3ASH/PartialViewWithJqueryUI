@@ -1,0 +1,67 @@
+﻿@using System.Web.Mvc.Ajax
+@model PayrollUsingJqueryUIWithValidation.Models.Department
+
+
+
+@using (Ajax.BeginForm("_CreateNewDepartment", "Department", null, new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "onSuccess",
+    OnFailure = "FailMessage",
+    UpdateTargetId = "resultTarget"
+}, new { id = "formId" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Code, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Code)
+                @*<input type="text" id="txtCode"/>*@
+                @Html.ValidationMessageFor(model => model.Code)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name)
+                @*<input type="text" id="txtName" />*@
+                @Html.ValidationMessageFor(model => model.Name)
+
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<script type="text/javascript" language=javascript>
+
+   
+      @*<<<<<<<<<<<<======Partial View validation=========>>>>>>>>>>>>>>>>*@
+      //$.validator.unobtrusive.parse(document);
+      $.validator.unobtrusive.parse('#formId');
+
+
+    function someClick() {
+        alert('Created Successfully...');
+        $("#savePerson").click(function () {
+            //Set inserted values
+            var code = $("#Code").val();
+            var name = $("#Name").val();
+            // Call Create action method
+            $.post('/Department/_DepartmentDetails', { "code": code, "name": name });
+        });
+    }
+    //$(document).ready(function () {
+    //    $.validator.unobtrusive.parse("#formId");
+
+    //});
+</script>
+
+

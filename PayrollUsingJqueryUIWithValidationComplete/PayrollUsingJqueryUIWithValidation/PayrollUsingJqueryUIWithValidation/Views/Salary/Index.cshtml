@@ -1,0 +1,280 @@
+﻿@model IEnumerable<PayrollUsingJqueryUIWithValidation.Models.Salary>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@*<<<<<<====Insert====>>>>>>>>*@
+
+<p>
+    <button id="model-openner-btn" onclick="CreateNewSalary()">Add New Salary</button>
+</p>
+<div id="load"></div>
+@*<<<<<<====Delete====>>>>>>>>*@
+<div id="dialog-confirm" style="display: none">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        Are you sure to delete?
+    </p>
+</div>
+@*<<<<<<====View Details====>>>>>>>>*@
+<div id="dialog-view" style="display: none">
+</div>
+@*<<<<<<====Edit====>>>>>>>>*@
+<div id="dialog-edit" style="display: none">
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.Employee.Name)*@
+            Employee Id
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Basic_Salary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.House_Rent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Medical)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Conveyance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+       
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Employee.Employee_Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Basic_Salary)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.House_Rent)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Medical)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Conveyance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        
+        <td>
+           
+            
+            
+            <button id="model-openner-btn">
+                @Html.ActionLink("Edit", "_EditSalary", new { id = item.Salary_Id }, new { @class = "editDialog" })
+            </button>|
+            <button id="model-delete-btn">
+                @Html.ActionLink("Delete", "DeleteRecord", new { id = item.Salary_Id }, new { @class = "confirmDialog" })
+            </button>|
+            <button id="model-details-btn">
+                @Html.ActionLink("Details", "_SalaryDetails", new { id = item.Salary_Id }, new { @class = "ViewDialog" })
+            </button>|
+            
+        </td>
+    </tr>
+}
+
+</table>
+<script type="text/javascript">
+
+    var url = "";
+
+//<<<<<<<<<<<<<====== Create/Insert New Department========>>>>>>>>>>>>>>>>>
+    function CreateNewSalary() {
+        $("#model-openner-btn").click(function() {
+            $("#load").dialog("open");
+        });
+        $(function() {
+            $("#load").dialog({
+                autoOpen: false,
+                //position: { my: "center", at: "top+14050", of: window },
+                resizable: false,
+                title: 'Add New Salary',
+                show: { effect: "blind", duration: 1000 },
+                hide: { effect: "explode", duration: 1000 },
+                height: 450,
+                width: 460,
+                model: true,
+                draggable: true,
+                open: function() {
+                    $(this).load("/Salary/_CreateNewSalary");
+                    @*$(this).load('@Url.Action("_CreateNewDepartment", "Department")');*@
+                },
+                buttons: {
+                    "Add": function () {
+
+                        $("#formId").submit();
+                        AddSalaryInfo();
+                    },
+                    'Cancel': function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+    }
+   
+    function AddSalaryInfo() {
+
+        $(function () {
+            $.post('/Salary/_CreateNewSalary', {
+                "employee_Id": $("#Employee_Id").val(), "basic_Salary": $("#Basic_Salary").val(),
+                "house_Rent": $("#House_Rent").val(), "medical": $("#Medical").val(),
+                "conveyance": $("#Conveyance").val(), "total": $("#Total").val()
+            });
+        });
+    }
+
+    //<<<<<<<<=====Alert========>>>>>>>>>>>>
+    $("#dialog-alert").dialog({
+        title: 'Alert',
+        autoOpen: false,
+        resizable: false,
+        height: 170,
+        width: 350,
+        show: { effect: 'drop', direction: "up" },
+        modal: true,
+        draggable: true,
+
+        buttons: {
+            "OK": function () {
+                $(this).dialog("close");
+
+            },
+            "Cancel": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    if ('@TempData["msg"]' != "") {
+        $("#dialog-alert").dialog('open');
+    }
+
+    //<<<<<<<<<<<<<<<<<<<<==========Delete=============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".confirmDialog").live("click", function (e) {
+
+        var url = $(this).attr('href');
+        $("#dialog-confirm").dialog({
+            title: 'Delete Salary Information',
+            autoOpen: false,
+            resizable: false,
+            height: 170,
+            width: 350,
+            show: { effect: "blind", duration: 1000 },
+            hide: { effect: "explode", duration: 1000 },
+            modal: true,
+            draggable: true,
+            buttons: {
+                "OK": function () {
+                    $(this).dialog("close");
+                    window.location = url;
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-confirm").dialog('open');
+        return false;
+    });
+
+    
+    //<<<<<<<<<<<<<<<<<<<<==========View Details=============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".ViewDialog").live("click", function (e) {
+
+        var url = $(this).attr('href');
+        $("#dialog-view").dialog({
+            title: 'View Salary Information',
+            autoOpen: false,
+            resizable: false,
+            height: 350,
+            width: 350,
+            show: { effect: "blind", duration: 1000 },
+            hide: { effect: "explode", duration: 1000 },
+            modal: true,
+            draggable: true,
+            open: function () {
+                $(this).load(url);
+            },
+            buttons: {
+                "Close": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-view").dialog('open');
+        return false;
+    });
+
+    //<<<<<<<<<<<<<<<<<<<<=======================>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<=========Edit==============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".editDialog").live("click", function (e) {
+        var url = $(this).attr('href');
+
+        $("#dialog-edit").dialog({
+            title: 'Update Salary Information',
+            autoOpen: false,
+            resizable: false,
+            height: 450,
+            width: 460,
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function () {
+                $(this).load(url);
+            },
+            close: function () {
+                $(this).dialog('close');
+            }
+        ,
+            buttons: {
+                "Update": function () {
+                    $("#formId").submit();
+                    EditDepartmentInfo();
+                },
+                'Cancel': function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-edit").dialog('open');
+        return false;
+    });
+
+    function EditDepartmentInfo() {
+        $(function () {
+            $.post('/Salary/_EditSalary', {
+                
+                "basic_Salary": $("#Basic_Salary").val(),
+                "house_Rent": $("#House_Rent").val(), "medical": $("#Medical").val(),
+                "conveyance": $("#Conveyance").val(), "total": $("#Total").val()
+
+
+
+            });
+        });
+    }
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,116 @@
+﻿@model PayrollUsingJqueryUIWithValidation.Models.Payment
+
+
+@using (Ajax.BeginForm("_CreateNewPayment", "Payment", null, new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "onSuccess",
+    OnFailure = "FailMessage",
+    UpdateTargetId = "resultTarget"
+}, new { id = "formId" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Payment</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Transaction_No, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Transaction_No)
+                @Html.ValidationMessageFor(model => model.Transaction_No)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Transaction_Date, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Transaction_Date)
+                @Html.ValidationMessageFor(model => model.Transaction_Date)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Employee_Id, "Employee_Id", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.DropDownList("Employee_Id", (SelectList)ViewBag.Employee_Id, "----Select One----")
+                @*@Html.DropDownList("Employee_Id", String.Empty)*@
+                @Html.ValidationMessageFor(model => model.Employee_Id)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Year_, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Year_)
+                @Html.ValidationMessageFor(model => model.Year_)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Month_, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Month_)
+                @Html.ValidationMessageFor(model => model.Month_)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Total_Amount, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Total_Amount)
+                @Html.ValidationMessageFor(model => model.Total_Amount)
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>*@
+    </div>
+}
+
+<script type="text/javascript">
+
+    var total_amount = 0.0;
+   
+   
+    $("#Total_Amount").focus(
+         function () {
+             alert($("#Employee_Id").val());
+             var employee_Id =  $("#Employee_Id").val();
+             var mydata = { employee_ID: employee_Id };
+             $.ajax({
+                 type: "POST",
+                 url: '@Url.Action("GetSalayInfo", "Payment")',
+                 contentType: "application/json; charset=utf-8",
+                 data: JSON.stringify(mydata),
+                 dataType: "json",
+                 success: function(data) {
+                     $("#Total_Amount").val(data.Total);
+                    }
+                 });
+         });
+</script>
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

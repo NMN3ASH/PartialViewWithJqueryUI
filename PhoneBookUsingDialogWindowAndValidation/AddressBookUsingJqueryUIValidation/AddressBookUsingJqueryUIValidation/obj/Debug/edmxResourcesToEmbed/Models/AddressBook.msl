@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PartialViewExampleModelsPhoneBookDBModelStoreContainer" CdmEntityContainer="AddressbookEntities">
+    <EntitySetMapping Name="GroupNames">
+      <EntityTypeMapping TypeName="PartialViewExample.Models.PhoneBookDBModel.GroupName">
+        <MappingFragment StoreEntitySet="GroupNames">
+          <ScalarProperty Name="GroupNameId" ColumnName="GroupNameId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhoneBooks">
+      <EntityTypeMapping TypeName="PartialViewExample.Models.PhoneBookDBModel.PhoneBook">
+        <MappingFragment StoreEntitySet="PhoneBooks">
+          <ScalarProperty Name="PhoneBookId" ColumnName="PhoneBookId" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="GroupNameId" ColumnName="GroupNameId" />
+          <ScalarProperty Name="DateEntry" ColumnName="DateEntry" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

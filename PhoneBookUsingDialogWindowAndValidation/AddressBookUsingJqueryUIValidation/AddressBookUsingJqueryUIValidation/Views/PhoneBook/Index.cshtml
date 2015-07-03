@@ -1,0 +1,297 @@
+﻿@model IEnumerable<AddressBookUsingJqueryUIValidation.Models.PhoneBook>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@*<<<<<<====Insert====>>>>>>>>*@
+<p>
+    <button id="model-openner-btn" onclick="CreateNewPerson()">Add New Person Information</button>
+</p>
+<div id="load"></div>
+@*<<<<<<====Alert====>>>>>>>>*@
+<div id="dialog-alert" style="display: none">
+    <p>
+        @TempData["msg"]!
+    </p>
+</div>
+@*<<<<<<====Delete====>>>>>>>>*@
+<div id="dialog-confirm" style="display: none">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>
+        Are you sure to delete?
+    </p>
+</div>
+@*<<<<<<====View Details====>>>>>>>>*@
+<div id="dialog-view" style="display: none">
+</div>
+@*<<<<<<====Edit====>>>>>>>>*@
+<div id="dialog-edit" style="display: none">
+</div>
+
+<table class="table">
+    <tr>
+       
+        <th>
+            @Html.DisplayNameFor(model => model.Number)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.GroupName.Name)*@
+            Group
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateEntry)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Number)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Address)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.GroupName.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateEntry)
+        </td>
+        <td>
+           <button id="model-openner-btn">
+            @Html.ActionLink("Edit", "_EditNewPerson", new { id = item.PhoneBookId }, new { @class = "editDialog" })
+            </button>|
+
+            <button id="model-delete-btn">
+                @Html.ActionLink("Delete", "DeleteRecord", new { id = item.PhoneBookId }, new { @class = "confirmDialog" })
+            </button>|
+
+            <button id="model-details-btn">
+                @Html.ActionLink("Details", "_PersonDetails", new { id = item.PhoneBookId }, new { @class = "ViewDialog" })
+            </button>
+        
+        </td>
+    </tr>
+}
+
+</table>
+<script type="text/javascript">
+
+    var url = "";
+    //<<<<<<<<<<<<<====== Create/Insert New Department========>>>>>>>>>>>>>>>>>
+    function CreateNewPerson()
+    {
+        $("#model-openner-btn").click(function () {
+            $("#load").dialog("open");
+        });
+        $(function () {
+            $("#load").dialog({
+                autoOpen: false,
+                //position: { my: "center", at: "top+14050", of: window },
+                resizable: false,
+                title: 'Add New Person',
+                show: { effect: "blind", duration: 1000 },
+                hide: { effect: "explode", duration: 1000 },
+                height: 550,
+                width: 380,
+                model: true,
+                draggable: true,
+                open: function () {
+                    $(this).load("/PhoneBook/_CreateNewPerson");
+                    @*$(this).load('@Url.Action("_CreateNewDepartment", "Department")');*@
+                },
+                buttons: {
+                    "Add": function() {
+
+                        $("#formId").submit();
+                        AddPersonInfo();
+                    },
+                    'Cancel': function() {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+    }
+
+    $.post("/PhoneBook/_CreateNewPerson", $('#formId').serialize(), function() {
+        $.validator.unobtrusive.parse('#formId');
+    });
+    function AddPersonInfo()
+    {
+        $(function() {
+            $.post('/PhoneBook/_CreateNewPerson', {
+
+                "number": $("#Number").val(), "firstName": $("#FirstName").val(),
+                "lastName": $("#LastName").val(), "email": $("#Email").val(),
+                "address": $("#Address").val(), "groupNameId": $("#GroupNameId").val()
+
+            });
+        });
+    }
+
+    //<<<<<<<<=====Alert========>>>>>>>>>>>>
+    $("#dialog-alert").dialog({
+        title: 'Alert',
+        autoOpen: false,
+        resizable: false,
+        height: 170,
+        width: 550,
+        show: { effect: 'drop', direction: "up" },
+        modal: true,
+        draggable: true,
+
+        buttons: {
+            "OK": function () {
+                $(this).dialog("close");
+
+            },
+            "Cancel": function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+    if ('@TempData["msg"]' != "") {
+        $("#dialog-alert").dialog('open');
+    }
+
+    //function SuccessMessage() {
+
+    //    $.post('/Department/_CreateNewDepartment', { "code": $("#code").val(), "name": $("#name").val() });
+    //    alert("hiiiiiiiii");
+    //    }
+    //<<<<<<<<<<<<<<<<<<<<=======================>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<==========Delete=============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".confirmDialog").live("click", function (e) {
+
+        var url = $(this).attr('href');
+        $("#dialog-confirm").dialog({
+            title: 'Delete User Information',
+            autoOpen: false,
+            resizable: false,
+            height: 170,
+            width: 350,
+            show: { effect: "blind", duration: 1000 },
+            hide: { effect: "explode", duration: 1000 },
+            modal: true,
+            draggable: true,
+            buttons: {
+                "OK": function () {
+                    $(this).dialog("close");
+                    window.location = url;
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-confirm").dialog('open');
+        return false;
+    });
+    //<<<<<<<<<<<<<<<<<<<<=======================>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<==========View Details=============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".ViewDialog").live("click", function(e) {
+
+        var url = $(this).attr('href');
+        $("#dialog-view").dialog({
+            title: 'View User Information',
+            autoOpen: false,
+            resizable: false,
+            height: 380,
+            width: 358,
+            show: { effect: "blind", duration: 1000 },
+            hide: { effect: "explode", duration: 1000 },
+            modal: true,
+            draggable: true,
+            open: function () {
+                $(this).load(url);
+            },
+            buttons: {
+                "Close": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-view").dialog('open');
+        return false;
+    });
+
+    //<<<<<<<<<<<<<<<<<<<<=======================>>>>>>>>>>>>>>>>>>>>>>>>>
+
+    //<<<<<<<<<<<<<<<<<<<<=========Edit==============>>>>>>>>>>>>>>>>>>>>>>>>>
+    $(".editDialog").live("click", function(e) {
+        var url = $(this).attr('href');
+      
+        $("#dialog-edit").dialog({
+            title: 'Update User Information',
+            autoOpen: false,
+            resizable: false,
+            height: 550,
+            width: 350,
+            show: { effect: 'drop', direction: "up" },
+            modal: true,
+            draggable: true,
+            open: function() {
+                $(this).load(url);
+            },
+            close: function() {
+                $(this).dialog('close');
+            }
+            ,
+            buttons: {
+                "Update": function() {
+                    $("#formId").submit();
+                    EditPersoneInfo();
+                },
+                'Cancel': function() {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        $("#dialog-edit").dialog('open');
+        return false;
+    });
+
+    function EditPersoneInfo() {
+        $(function () {
+            //alert(url);
+            $.post('/PhoneBook/_EditNewPerson', {
+                "number": $("#Number").val(), "firstName": $("#FirstName").val(),
+                "lastName": $("#LastName").val(), "email": $("#Email").val(),
+                "address": $("#Address").val(), "groupNameId": $("#GroupNameId").val()
+            });
+        });
+    }
+
+   
+
+
+
+
+</script>

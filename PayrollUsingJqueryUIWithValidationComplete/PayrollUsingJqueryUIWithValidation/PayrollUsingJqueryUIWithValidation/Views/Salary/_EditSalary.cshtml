@@ -1,0 +1,115 @@
+﻿@model PayrollUsingJqueryUIWithValidation.Models.Salary
+
+
+@using (Ajax.BeginForm("_EditSalary", "Salary", null, new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "onSuccess",
+    OnFailure = "FailMessage",
+    UpdateTargetId = "resultTarget"
+}, new { id = "formId" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Salary</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Salary_Id)
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.Employee_Id, "Employee_Id", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Employee_Id", String.Empty)
+                @Html.ValidationMessageFor(model => model.Employee_Id)
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Basic_Salary, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Basic_Salary)
+                @Html.ValidationMessageFor(model => model.Basic_Salary)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.House_Rent, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.House_Rent)% of Basic
+                @Html.ValidationMessageFor(model => model.House_Rent)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Medical, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Medical)% of Basic
+                @Html.ValidationMessageFor(model => model.Medical)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Conveyance, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Conveyance)% of Basic
+                @Html.ValidationMessageFor(model => model.Conveyance)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Total, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Total)
+                @Html.ValidationMessageFor(model => model.Total)
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>*@
+    </div>
+}
+
+@*<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>*@
+
+<script type="text/javascript">
+
+    var basic_salary = 0.0;
+    var house_rent = 0.0;
+    var medical1 = 0.0;
+    var conveyance1 = 0.0;
+    var Total1 = 0.0;
+
+    $("#Total").focus(
+         function () {
+
+             basic_salary = parseFloat($("#Basic_Salary").val());
+             house_rent = parseFloat($("#House_Rent").val());
+             medical1 = parseFloat($("#Medical").val());
+             conveyance1 = parseFloat($("#Conveyance").val());
+             Total1 = basic_salary
+                 + (basic_salary * (house_rent / 100))
+                 + (basic_salary * (medical1 / 100))
+                 + (basic_salary * (conveyance1 / 100))
+             ;
+             $("#Total").val(Total1);
+         });
+</script>
+
+
+
+
+
+
+
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

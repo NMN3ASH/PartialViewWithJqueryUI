@@ -1,0 +1,122 @@
+﻿@model PayrollUsingJqueryUIWithValidation.Models.Employee
+
+
+@using (Ajax.BeginForm("_CreateNewEmployee", "Employee", null, new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "onSuccess",
+    OnFailure = "FailMessage",
+    UpdateTargetId = "resultTarget"
+}, new { id = "formId" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Employee</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Contact, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Contact)
+                @Html.ValidationMessageFor(model => model.Contact)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address1, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Address1)
+                @Html.ValidationMessageFor(model => model.Address1)
+            </div>
+        </div>
+
+        <div class="form-group">
+                @Html.LabelFor(model => model.Department_Id, "DepartmentId", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    @*@Html.DropDownList("Department_Id", String.Empty)*@
+            
+                @Html.DropDownList("Department_Id", (SelectList)ViewBag.Department_Id, "-----Select One-----")
+                @Html.ValidationMessageFor(model => model.Department_Id)
+                </div>
+            </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Join_date, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.EditorFor(model => model.Join_date)
+                @Html.ValidationMessageFor(model => model.Join_date)
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" />
+                </div>
+            </div>*@
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+
+
+    <script type="text/javascript" language=javascript>
+
+
+      @*<<<<<<<<<<<<======Partial View validation=========>>>>>>>>>>>>>>>>*@
+      //$.validator.unobtrusive.parse(document);
+      $.validator.unobtrusive.parse('#formId');
+
+
+        //function someClick() {
+        //    alert('Created Successfully...');
+        //    $("#savePerson").click(function () {
+        //        //Set inserted values
+        //        var name = $("#Name").val();
+        //        var email = $("#Email").val();
+        //        var contact = $("#Contact").val();
+        //        var address1 = $("#Address1").val();
+        //        var join_date = $("#Join_date").val();
+
+        //        // Call Create action method
+        //        $.post('/Department/_DepartmentDetails', {
+        //            "name": name, "email": email,
+        //            "contact": contact, "address1": address1,
+        //            "join_date": join_date
+
+
+            //    });
+            //});
+        }
+        //$(document).ready(function () {
+        //    $.validator.unobtrusive.parse("#formId");
+
+        //});
+    </script>
+}

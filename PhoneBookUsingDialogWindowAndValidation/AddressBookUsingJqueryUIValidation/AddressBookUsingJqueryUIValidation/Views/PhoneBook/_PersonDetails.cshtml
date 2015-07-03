@@ -1,0 +1,64 @@
+﻿@model AddressBookUsingJqueryUIValidation.Models.PhoneBook
+
+<div>
+
+	<hr />
+    <dl class="dl-horizontal">
+       
+        <dt>
+            @Html.DisplayNameFor(model => model.Number)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Number)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+            @Html.LabelFor(model => model.GroupNameId, "Group")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GroupName.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DateEntry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateEntry)
+        </dd>
+       
+
+
+    </dl>
+</div>

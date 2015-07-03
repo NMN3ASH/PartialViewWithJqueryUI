@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PayrollModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Department_Id" />
+          </Key>
+          <Property Name="Department_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Employee_Id" />
+          </Key>
+          <Property Name="Employee_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Contact" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Address1" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Department_Id" Type="int" Nullable="false" />
+          <Property Name="Join_date" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Payment_Id" />
+          </Key>
+          <Property Name="Payment_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Transaction_No" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Transaction_Date" Type="date" Nullable="false" />
+          <Property Name="Employee_Id" Type="int" Nullable="false" />
+          <Property Name="Year_" Type="int" Nullable="false" />
+          <Property Name="Month_" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Total_Amount" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Salary">
+          <Key>
+            <PropertyRef Name="Salary_Id" />
+          </Key>
+          <Property Name="Salary_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Employee_Id" Type="int" Nullable="false" />
+          <Property Name="Basic_Salary" Type="float" Nullable="false" />
+          <Property Name="House_Rent" Type="float" Nullable="false" />
+          <Property Name="Medical" Type="float" Nullable="false" />
+          <Property Name="Conveyance" Type="float" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__Employee__Depart__4BAC3F29">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Department_Id" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Department_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Payment__Employe__52593CB8">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Salary__Employee__4F7CD00D">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Salary" Type="Self.Salary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Salary">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PayrollModelStoreContainer">
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Salary" EntityType="Self.Salary" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Employee__Depart__4BAC3F29" Association="Self.FK__Employee__Depart__4BAC3F29">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="Employee" EntitySet="Employee" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Payment__Employe__52593CB8" Association="Self.FK__Payment__Employe__52593CB8">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Salary__Employee__4F7CD00D" Association="Self.FK__Salary__Employee__4F7CD00D">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Salary" EntitySet="Salary" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PayrollModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="Department_Id" />
+          </Key>
+          <Property Name="Department_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK__Employee__Depart__4BAC3F29" FromRole="Department" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="Employee_Id" />
+          </Key>
+          <Property Name="Employee_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contact" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Address1" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Department_Id" Type="Int32" Nullable="false" />
+          <Property Name="Join_date" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="Department" Relationship="Self.FK__Employee__Depart__4BAC3F29" FromRole="Employee" ToRole="Department" />
+          <NavigationProperty Name="Payments" Relationship="Self.FK__Payment__Employe__52593CB8" FromRole="Employee" ToRole="Payment" />
+          <NavigationProperty Name="Salaries" Relationship="Self.FK__Salary__Employee__4F7CD00D" FromRole="Employee" ToRole="Salary" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="Payment_Id" />
+          </Key>
+          <Property Name="Payment_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Transaction_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Transaction_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Employee_Id" Type="Int32" Nullable="false" />
+          <Property Name="Year_" Type="Int32" Nullable="false" />
+          <Property Name="Month_" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Total_Amount" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK__Payment__Employe__52593CB8" FromRole="Payment" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Salary">
+          <Key>
+            <PropertyRef Name="Salary_Id" />
+          </Key>
+          <Property Name="Salary_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Employee_Id" Type="Int32" Nullable="false" />
+          <Property Name="Basic_Salary" Type="Double" Nullable="false" />
+          <Property Name="House_Rent" Type="Double" Nullable="false" />
+          <Property Name="Medical" Type="Double" Nullable="false" />
+          <Property Name="Conveyance" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK__Salary__Employee__4F7CD00D" FromRole="Salary" ToRole="Employee" />
+        </EntityType>
+        <Association Name="FK__Employee__Depart__4BAC3F29">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="Employee" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="Department_Id" />
+            </Principal>
+            <Dependent Role="Employee">
+              <PropertyRef Name="Department_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Payment__Employe__52593CB8">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Salary__Employee__4F7CD00D">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="Salary" Type="Self.Salary" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="Employee_Id" />
+            </Principal>
+            <Dependent Role="Salary">
+              <PropertyRef Name="Employee_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PayrollEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Payments" EntityType="Self.Payment" />
+          <EntitySet Name="Salaries" EntityType="Self.Salary" />
+          <AssociationSet Name="FK__Employee__Depart__4BAC3F29" Association="Self.FK__Employee__Depart__4BAC3F29">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="Employee" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Payment__Employe__52593CB8" Association="Self.FK__Payment__Employe__52593CB8">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Payment" EntitySet="Payments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Salary__Employee__4F7CD00D" Association="Self.FK__Salary__Employee__4F7CD00D">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Salary" EntitySet="Salaries" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PayrollModelStoreContainer" CdmEntityContainer="PayrollEntities">
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="PayrollModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="Department_Id" ColumnName="Department_Id" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="PayrollModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Department_Id" ColumnName="Department_Id" />
+                <ScalarProperty Name="Join_date" ColumnName="Join_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payments">
+            <EntityTypeMapping TypeName="PayrollModel.Payment">
+              <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="Payment_Id" ColumnName="Payment_Id" />
+                <ScalarProperty Name="Transaction_No" ColumnName="Transaction_No" />
+                <ScalarProperty Name="Transaction_Date" ColumnName="Transaction_Date" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="Year_" ColumnName="Year_" />
+                <ScalarProperty Name="Month_" ColumnName="Month_" />
+                <ScalarProperty Name="Total_Amount" ColumnName="Total_Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Salaries">
+            <EntityTypeMapping TypeName="PayrollModel.Salary">
+              <MappingFragment StoreEntitySet="Salary">
+                <ScalarProperty Name="Salary_Id" ColumnName="Salary_Id" />
+                <ScalarProperty Name="Employee_Id" ColumnName="Employee_Id" />
+                <ScalarProperty Name="Basic_Salary" ColumnName="Basic_Salary" />
+                <ScalarProperty Name="House_Rent" ColumnName="House_Rent" />
+                <ScalarProperty Name="Medical" ColumnName="Medical" />
+                <ScalarProperty Name="Conveyance" ColumnName="Conveyance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

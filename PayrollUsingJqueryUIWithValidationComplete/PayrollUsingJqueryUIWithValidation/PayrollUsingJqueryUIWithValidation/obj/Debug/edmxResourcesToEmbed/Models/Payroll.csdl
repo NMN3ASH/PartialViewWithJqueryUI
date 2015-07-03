@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PayrollModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Department">
+    <Key>
+      <PropertyRef Name="Department_Id" />
+    </Key>
+    <Property Name="Department_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Employees" Relationship="PayrollModel.FK__Employee__Depart__37A5467C" FromRole="Department" ToRole="Employee" />
+  </EntityType>
+  <EntityContainer Name="PayrollEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Departments" EntityType="Self.Department" />
+    <EntitySet Name="Employees" EntityType="PayrollModel.Employee" />
+    <EntitySet Name="Payments" EntityType="PayrollModel.Payment" />
+    <EntitySet Name="Salaries" EntityType="PayrollModel.Salary" />
+    <AssociationSet Name="FK__Employee__Depart__37A5467C" Association="PayrollModel.FK__Employee__Depart__37A5467C">
+      <End Role="Department" EntitySet="Departments" />
+      <End Role="Employee" EntitySet="Employees" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Payment__Employe__3E52440B" Association="PayrollModel.FK__Payment__Employe__3E52440B">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="Payment" EntitySet="Payments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Salary__Employee__3B75D760" Association="PayrollModel.FK__Salary__Employee__3B75D760">
+      <End Role="Employee" EntitySet="Employees" />
+      <End Role="Salary" EntitySet="Salaries" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="Employee_Id" />
+    </Key>
+    <Property Name="Employee_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Contact" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Address1" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="Department_Id" Type="Int32" />
+    <Property Name="Join_date" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="Department" Relationship="PayrollModel.FK__Employee__Depart__37A5467C" FromRole="Employee" ToRole="Department" />
+    <NavigationProperty Name="Payments" Relationship="PayrollModel.FK__Payment__Employe__3E52440B" FromRole="Employee" ToRole="Payment" />
+    <NavigationProperty Name="Salaries" Relationship="PayrollModel.FK__Salary__Employee__3B75D760" FromRole="Employee" ToRole="Salary" />
+  </EntityType>
+  <EntityType Name="Payment">
+    <Key>
+      <PropertyRef Name="Payment_Id" />
+    </Key>
+    <Property Name="Payment_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Transaction_No" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Transaction_Date" Type="DateTime" Precision="0" />
+    <Property Name="Employee_Id" Type="Int32" />
+    <Property Name="Year_" Type="Int32" />
+    <Property Name="Month_" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Total_Amount" Type="Double" />
+    <NavigationProperty Name="Employee" Relationship="PayrollModel.FK__Payment__Employe__3E52440B" FromRole="Payment" ToRole="Employee" />
+  </EntityType>
+  <EntityType Name="Salary">
+    <Key>
+      <PropertyRef Name="Salary_Id" />
+    </Key>
+    <Property Name="Salary_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Employee_Id" Type="Int32" />
+    <Property Name="Basic_Salary" Type="Double" />
+    <Property Name="House_Rent" Type="Double" />
+    <Property Name="Medical" Type="Double" />
+    <Property Name="Conveyance" Type="Double" />
+    <Property Name="Total" Type="Double" />
+    <NavigationProperty Name="Employee" Relationship="PayrollModel.FK__Salary__Employee__3B75D760" FromRole="Salary" ToRole="Employee" />
+  </EntityType>
+  <Association Name="FK__Employee__Depart__37A5467C">
+    <End Type="PayrollModel.Department" Role="Department" Multiplicity="0..1" />
+    <End Type="PayrollModel.Employee" Role="Employee" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Department">
+        <PropertyRef Name="Department_Id" />
+      </Principal>
+      <Dependent Role="Employee">
+        <PropertyRef Name="Department_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Payment__Employe__3E52440B">
+    <End Type="PayrollModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="PayrollModel.Payment" Role="Payment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Employee_Id" />
+      </Principal>
+      <Dependent Role="Payment">
+        <PropertyRef Name="Employee_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Salary__Employee__3B75D760">
+    <End Type="PayrollModel.Employee" Role="Employee" Multiplicity="0..1" />
+    <End Type="PayrollModel.Salary" Role="Salary" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Employee">
+        <PropertyRef Name="Employee_Id" />
+      </Principal>
+      <Dependent Role="Salary">
+        <PropertyRef Name="Employee_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

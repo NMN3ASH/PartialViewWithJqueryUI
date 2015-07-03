@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PartialViewExample.Models.PhoneBookDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="GroupName">
+    <Key>
+      <PropertyRef Name="GroupNameId" />
+    </Key>
+    <Property Name="GroupNameId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="PhoneBooks" Relationship="Self.FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId" FromRole="GroupNames" ToRole="PhoneBooks" />
+  </EntityType>
+  <EntityType Name="PhoneBook">
+    <Key>
+      <PropertyRef Name="PhoneBookId" />
+    </Key>
+    <Property Name="PhoneBookId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Number" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="GroupNameId" Type="Int32" Nullable="false" />
+    <Property Name="DateEntry" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="GroupName" Relationship="Self.FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId" FromRole="PhoneBooks" ToRole="GroupNames" />
+  </EntityType>
+  <Association Name="FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId">
+    <End Role="GroupNames" Type="Self.GroupName" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="PhoneBooks" Type="Self.PhoneBook" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="GroupNames">
+        <PropertyRef Name="GroupNameId" />
+      </Principal>
+      <Dependent Role="PhoneBooks">
+        <PropertyRef Name="GroupNameId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AddressbookEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="GroupNames" EntityType="Self.GroupName" />
+    <EntitySet Name="PhoneBooks" EntityType="Self.PhoneBook" />
+    <AssociationSet Name="FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId" Association="Self.FK_dbo_PhoneBooks_dbo_GroupNames_GroupNameId">
+      <End Role="GroupNames" EntitySet="GroupNames" />
+      <End Role="PhoneBooks" EntitySet="PhoneBooks" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
